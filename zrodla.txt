@@ -1,0 +1,38 @@
+https://www.spiceworks.com/tech/artificial-intelligence/articles/what-is-reinforcement-learning/#:~:text=off%2Dpolicy%20types.-,Reinforcement%20Learning%20Algorithms,action%20data%20for%20future%20reference.
+https://smartlabai.medium.com/reinforcement-learning-algorithms-an-intuitive-overview-904e2dff5bbc
+uzyc DDPG TD3 DQN
+https://keras.io/examples/rl/ddpg_pendulum/
+
+The discount factor determines the importance of future rewards. It ranges between 0 and 1.
+
+High 
+𝛾
+γ (close to 1): This makes the agent consider future rewards more heavily, leading to more far-sighted behavior. However, if set too high, it might lead to instability or slower learning, especially if the environment is stochastic or the future rewards are very uncertain.
+
+When to increase: If the agent is being too short-sighted (e.g., it is only maximizing immediate rewards and not learning long-term strategies).
+When to decrease: If the agent is having difficulty learning (e.g., it might be overestimating future rewards and not focusing enough on immediate, more certain rewards).
+Low 
+𝛾
+γ (close to 0): This makes the agent prioritize immediate rewards more. It can lead to quicker but more myopic learning.
+
+When to increase: If the agent is only focusing on immediate rewards and missing out on long-term strategies.
+When to decrease: If the environment is highly uncertain, and immediate rewards are more reliable indicators of good policies.
+
+
+Target Update Rate (
+𝜏
+τ)
+The target update rate controls how quickly the target networks (target actor and target critic) are updated towards the main networks. It ranges between 0 and 1.
+
+High 
+𝜏
+τ (close to 1): This means the target networks are updated quickly to match the main networks. This can lead to more rapid adaptation but might also cause instability if the main networks are not yet stable.
+
+When to increase: If the agent’s learning is too slow and the target networks are lagging too far behind the main networks.
+When to decrease: If the learning is unstable, the agent’s performance is oscillating or diverging, indicating that the target networks are being updated too aggressively.
+Low 
+𝜏
+τ (close to 0): This means the target networks are updated slowly. It provides more stability but might slow down the learning process.
+
+When to increase: If the learning is stable but too slow, indicating that the target networks are not keeping up with the main networks.
+When to decrease: If the learning is unstable, the agent is not converging to good policies, or the performance is very oscillatory.
