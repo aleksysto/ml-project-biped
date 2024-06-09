@@ -41,9 +41,9 @@ agent = Agent(
     delay_interval=DELAY_INTERVAL,
     std_dev=STD_DEV,
     c=C_VALUE,
-    memory_len=290000)
+    memory_len=60000)
 
-RANDOM_STEPS = 3000
+RANDOM_STEPS = 14000
 STEPS = 0
 SOLVED = False
 
@@ -79,7 +79,7 @@ for episode in range(EPISODES):
     print("Episode: ", episode,
           " Total reward: ", total_reward,
           " Avg reward: ", avg_reward,
-          " Buffer size: ", agent.memory.counter)
+          " Buffer size: ", len(agent.memory.done_mem))
 
     if avg_reward >= 300:
         SOLVED = True
