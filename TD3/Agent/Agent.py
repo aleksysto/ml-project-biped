@@ -40,9 +40,9 @@ class Agent:
         self.critic_2_target.set_weights(self.critic_2.get_weights())
 
         self.loss_fn = tf.keras.losses.Huber()
-        self.optimizer_a = tf.keras.optimizers.Adam(learning_rate=lr)
-        self.optimizer_c1 = tf.keras.optimizers.Adam(learning_rate=lr)
-        self.optimizer_c2 = tf.keras.optimizers.Adam(learning_rate=lr)
+        self.optimizer_a = tf.keras.optimizers.Adam(learning_rate=0.0001)
+        self.optimizer_c1 = tf.keras.optimizers.Adam(learning_rate=0.001)
+        self.optimizer_c2 = tf.keras.optimizers.Adam(learning_rate=0.001)
 
     @tf.function
     def noise_action(self, state):
