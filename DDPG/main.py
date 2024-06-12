@@ -17,22 +17,22 @@ from Agent.Agent import Agent
 # 128 batch, tau 0.001, ounoise, critic lr 0.0001, actor lr 0.00005, critic weight decay 0.0001 (400-300 neuron) 
 # 128 batch, tau 0.005, ounoise, critic lr 0.0001, actor lr 0.00005, critic weight decay 0.0001 (400-300 neuron) 
 
-# TODO -> test 0.01 tau, critic learning rate to 0.00005, implement ornstein, add qvalue and gradient monitoring
-# TODO -> add l2 regularization, batch normalization, test 0.98 and 0.95 discount,  
+# test 0.01 tau, critic learning rate to 0.00005, implement ornstein, add qvalue and gradient monitoring
+# add l2 regularization, batch normalization, test 0.98 and 0.95 discount,  
 # Sharp decline due to policy deterministic, weak exploration, instability in qval predictions
 # HYPERPARAMS (unused are commented out):
 # weight_decay = 0.0001
 # SIGMA = 0.1
 LOAD_MODELS = False
 TAU = 0.001
-CRITIC_LR = 0.0001
-ACTOR_LR = 0.0001
-LR = 0.0003
+CRITIC_LR = 0.001
+ACTOR_LR = 0.0005
 GAMMA = 0.99
-EPISODES = 2000
+EPISODES = 1000
 STD_DEV = 0.1
 BATCH_SIZE = 128
-C_VALUE = 0.3  # for clipping noise
+C_VALUE = 0.4  # for clipping noise
+BUFFER_SIZE = 100000
 # OU_NOISE = 1  # change
 # BUFFER = 1  # change
 
@@ -51,15 +51,15 @@ agent = Agent(
     states=num_states,
     actions=num_actions,
     batch_size=BATCH_SIZE,
-    lr=LR,
+    actor_lr=ACTOR_LR,
+    critic_lr=CRITIC_LR,
     gamma=GAMMA,
     tau=TAU,
-    delay_interval=DELAY_INTERVAL,
     std_dev=STD_DEV,
     c=C_VALUE,
-    memory_len=270000)
+    memory_len=BUFFER_SIZE)
 
-RANDOM_STEPS = 1000
+RANDOM_STEPS = 500
 STEPS = 0
 SOLVED = False
 
@@ -107,6 +107,7 @@ for episode in range(EPISODES):
             "critic_weights.weights.h5")
         agent.critic_target.save_weights(
             "critic_target_weights.weights.h5")
+        break
 
 if not SOLVED:
     agent.actor.save_weights("actor_weights_UNSOLVED.weights.h5")

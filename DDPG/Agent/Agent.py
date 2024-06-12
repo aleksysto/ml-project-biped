@@ -10,10 +10,10 @@ class Agent:
                  states=24,
                  actions=4,
                  batch_size=128,
-                 lr=0.0005,
+                 actor_lr=0.0005,
+                 critic_lr=0.0005,
                  gamma=0.99,
                  tau=0.005,
-                 delay_interval=10,
                  std_dev=0.1,
                  c=0.3,
                  memory_len=300000):
@@ -22,7 +22,6 @@ class Agent:
         self.batch_size = batch_size
         self.gamma = gamma
         self.tau = tau
-        self.delay_interval = delay_interval
         self.std_dev = std_dev
         self.c = c
         self.noise_generator = OUActionNoise(actions, 10)
@@ -39,15 +38,13 @@ class Agent:
         self.critic_target.set_weights(self.critic.get_weights())
 
         self.loss_fn = tf.keras.losses.Huber()
-        self.optimizer_a = tf.keras.optimizers.Adam(learning_rate=lr)
-        self.optimizer_c = tf.keras.optimizers.Adam(learning_rate=lr)
+        self.optimizer_a = tf.keras.optimizers.Adam(learning_rate=actor_lr)
+        self.optimizer_c = tf.keras.optimizers.Adam(learning_rate=critic_lr)
 
     @tf.function
     def noise_action(self, state):
         noise = self.noise_generator.sample()
-        action = self.actor(state[None, :]) + tf.clip_by_value(noise,
-                                                               -1.0 * self.c,
-                                                               self.c)
+        action = self.actor(state[None, :]) + noise
         return action[0]
 
     @tf.function
