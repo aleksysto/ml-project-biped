@@ -1,2 +1,4 @@
 *.weights.h5
 *.png
+*.mp4
+*.meta.json
