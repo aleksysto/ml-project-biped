@@ -10,6 +10,8 @@ class Agent:
                  actions=4,
                  batch_size=128,
                  lr=0.0005,
+                 critic_lr=0.0005,
+                 actor_lr=0.0005,
                  gamma=0.99,
                  tau=0.005,
                  delay_interval=10,
@@ -40,9 +42,9 @@ class Agent:
         self.critic_2_target.set_weights(self.critic_2.get_weights())
 
         self.loss_fn = tf.keras.losses.Huber()
-        self.optimizer_a = tf.keras.optimizers.Adam(learning_rate=0.0001)
-        self.optimizer_c1 = tf.keras.optimizers.Adam(learning_rate=0.001)
-        self.optimizer_c2 = tf.keras.optimizers.Adam(learning_rate=0.001)
+        self.optimizer_a = tf.keras.optimizers.Adam(learning_rate=actor_lr)
+        self.optimizer_c1 = tf.keras.optimizers.Adam(learning_rate=critic_lr)
+        self.optimizer_c2 = tf.keras.optimizers.Adam(learning_rate=critic_lr)
 
     @tf.function
     def noise_action(self, state):

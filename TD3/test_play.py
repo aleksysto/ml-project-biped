@@ -2,9 +2,9 @@ import gymnasium as gym
 from Agent.Agent import Agent
 
 actor = Agent()
-actor.actor.load_weights("./weights/actor/actor_weights_UNSOLVED.weights.h5")
+actor.actor.load_weights("./weights/best_weights/actor_weights_UNSOLVED.weights.h5")
 env = gym.make("BipedalWalker-v3", hardcore=False, render_mode="rgb_array")
-wrapped = gym.wrappers.RecordVideo(env, "./videos", episode_trigger=lambda episode: (episode+1)>0)
+wrapped = gym.wrappers.RecordVideo(env, "./videos2", episode_trigger=lambda episode: (episode+1)>0)
 for episode in range(5):
     state, _ = wrapped.reset()
     wrapped.start_video_recorder()

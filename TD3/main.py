@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 from Agent.Agent import Agent
 # HYPERPARAMS (unused are commented out):
 # weight_decay = 0.0001
-# CRITIC_LR = 0.0001
-# ACTOR_LR = 0.0001
+CRITIC_LR = 0.001
+ACTOR_LR = 0.0001
 TAU = 0.001
 LR = 0.0005
 GAMMA = 0.99
@@ -38,6 +38,8 @@ agent = Agent(
     actions=num_actions,
     batch_size=BATCH_SIZE,
     lr=LR,
+    critic_lr=CRITIC_LR,
+    actor_lr=ACTOR_LR,
     gamma=GAMMA,
     tau=TAU,
     delay_interval=DELAY_INTERVAL,
