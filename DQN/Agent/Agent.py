@@ -44,16 +44,17 @@ class Agent:
             return
         states, actions, rewards, next_states, dones = self.memory.get_batch()
         self.train_critic(states, actions, rewards, next_states, dones)
-        if time % self.delay_interval == 0:
+        if self.memory.counter % self.delay_interval == 0:
             self.soft_update(self.critic, self.critic_target)
 
     @tf.function
     def train_critic(self, states, actions, rewards, next_states, dones):
         q_next = self.critic_target(next_states)
-        y = rewards + (self.gamma * tf.reduce_max(q_next, axis=1)) * (1 - dones)
-        y = tf.expand_dims(y, axis=1)
+        y = rewards + (self.gamma * q_next) * (1 - dones)
+        y = tf.reduce_max(y, axis=1)
         with tf.GradientTape() as tape:
             q = self.critic(states)
+            q = tf.reduce_max(q, axis=1)
             loss = self.loss_fn(y, q)
         gradients = tape.gradient(loss, self.critic.trainable_variables)
         gradients = [tf.clip_by_value(gradient, -1, 1)

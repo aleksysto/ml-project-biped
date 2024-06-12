@@ -5,16 +5,16 @@ import matplotlib.pyplot as plt
 from Agent.Agent import Agent
 # HYPERPARAMS (unused are commented out):
 LOAD_MODELS = False
-TAU = 0.001
-LR = 0.0005
+TAU = 0.002
+LR = 0.001
 GAMMA = 0.99
-EPISODES = 3000
+EPISODES = 1750
 STD_DEV = 0.1
 BATCH_SIZE = 128
 EPSILON = 1
-EPSILON_DECAY = 0.001
+EPSILON_DECAY = 0.0005
 EPSILON_MIN = 0.05
-DELAY_INTERVAL = 4
+DELAY_INTERVAL = 2
 
 env = gym.make("BipedalWalker-v3", hardcore=False, render_mode="human")
 # env = gym.make("Pendulum-v1", render_mode="human")
@@ -33,12 +33,11 @@ agent = Agent(states=num_states,
               gamma=GAMMA,
               tau=TAU,
               delay_interval=DELAY_INTERVAL,
-              memory_len=200000)
+              memory_len=150000)
 
 RANDOM_STEPS = 25000
-STEPS = 0
 SOLVED = False
-
+STEPS = 0
 reward_window = deque(maxlen=40)
 avg_rewards = []
 for episode in range(EPISODES):
@@ -82,34 +81,12 @@ for episode in range(EPISODES):
         SOLVED = True
         print("Solved!")
 
-        agent.actor.save_weights("actor_weights.weights.h5")
-        agent.actor_target.save_weights(
-            "actor_target_weights.weights.h5")
-
-        agent.critic_1.save_weights(
+        agent.critic.save_weights(
             "critic_1_weights.weights.h5")
-        agent.critic_2.save_weights(
-            "critic_2_weights.weights.h5")
-
-        agent.critic_1_target.save_weights(
-            "critic_1_target_weights.weights.h5")
-        agent.critic_2_target.save_weights(
-            "critic_2_target_weights.weights.h5")
 
 if not SOLVED:
-    agent.actor.save_weights("actor_weights_UNSOLVED.weights.h5")
-    agent.actor_target.save_weights(
-        "actor_target_weights_UNSOLVED.weights.h5")
-
-    agent.critic_1.save_weights(
-        "critic_1_weights_UNSOLVED.weights.h5")
-    agent.critic_2.save_weights(
-        "critic_2_weights_UNSOLVED.weights.h5")
-
-    agent.critic_1_target.save_weights(
-        "critic_1_target_weights_UNSOLVED.weights.h5")
-    agent.critic_2_target.save_weights(
-        "critic_2_target_weights_UNSOLVED.weights.h5")
+    agent.critic.save_weights(
+        "critic_1_weights.weights.h5")
 
 plt.plot(avg_rewards)
 plt.xlabel("Episode")
